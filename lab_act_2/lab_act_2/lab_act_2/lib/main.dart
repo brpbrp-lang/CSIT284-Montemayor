@@ -7,12 +7,33 @@ void main() {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
+             
+              Colors.green,
+              Colors.white,
               Colors.red,
-              Colors.blue
+              
             ])
           ),
           child: Center(
-            child: Text("Hello World"),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  width:200,
+                  'assets/dice-images/dice-images/dice-5.png'
+                  ),
+                  SizedBox(height: 30),
+                TextButton(
+                  onPressed: () {}, 
+                  child: Text(
+                    style: TextStyle(
+                      fontSize: 28
+                      ),
+                    "Roll Dice"
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
