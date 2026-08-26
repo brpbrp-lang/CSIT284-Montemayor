@@ -25,7 +25,7 @@ class _DiceRollerState extends State<DiceRoller> {
       children: [
         Image.asset(width: 200, currentDiceImage),
         SizedBox(height: 20),
-        TextButton(
+        ElevatedButton(
           onPressed: rollDice,
           child: Text(style: TextStyle(fontSize: 28), "Roll Dice"),
         ),
