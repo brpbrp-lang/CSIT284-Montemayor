@@ -24,7 +24,9 @@ class SummaryItem extends StatelessWidget {
             isCorrectAnswer: isCorrectAnswer,
             questionIndex: itemData['question_index'] as int,
           ),
+
           const SizedBox(width: 20),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,24 +34,28 @@ class SummaryItem extends StatelessWidget {
                 Text(
                   itemData['question'] as String,
                   style: GoogleFonts.lato(
-                    color: Colors.white,
+                    color: const Color(0xFF800020),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+
+                const SizedBox(height: 5),
+
                 Text(
-                  itemData['user_answer'] as String,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 202, 171, 252),
+                  'Your answer: ${itemData['user_answer']}',
+                  style: GoogleFonts.lato(
+                    color: const Color(0xFF800020),
+                    fontSize: 14,
                   ),
                 ),
+
                 Text(
-                  itemData['correct_answer'] as String,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 181, 254, 246),
+                  'Correct answer: ${itemData['correct_answer']}',
+                  style: GoogleFonts.lato(
+                    color: const Color(0xFF800020),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -60,3 +66,4 @@ class SummaryItem extends StatelessWidget {
     );
   }
 }
+

@@ -41,38 +41,61 @@ class ResultsScreen extends StatelessWidget {
         )
         .length;
 
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        margin: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
-              style: GoogleFonts.lato(
-                color: const Color.fromARGB(255, 230, 200, 253),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFFEC412),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: Container(
+          margin: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Quiz Complete!',
+                style: GoogleFonts.lato(
+                  color: const Color(0xFF800020),
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            QuestionsSummary(summaryData),
-            const SizedBox(
-              height: 30,
-            ),
-            TextButton.icon(
-              onPressed: onRestart,
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
+
+              const SizedBox(height: 15),
+
+              Text(
+                'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
+                style: GoogleFonts.lato(
+                  color: const Color(0xFF800020),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Restart Quiz!'),
-            ),
-          ],
+
+              const SizedBox(height: 30),
+
+              QuestionsSummary(summaryData),
+
+              const SizedBox(height: 30),
+
+              TextButton.icon(
+                onPressed: onRestart,
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xFF800020),
+                ),
+                icon: const Icon(Icons.refresh),
+                label: Text(
+                  'Restart Quiz!',
+                  style: GoogleFonts.lato(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

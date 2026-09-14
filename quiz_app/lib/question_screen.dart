@@ -33,33 +33,40 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   Widget build(context) {
     final currentQuestion = questions[currentQuestionIndex];
 
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        margin: const EdgeInsets.all(40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              currentQuestion.text,
-              style: GoogleFonts.lato(
-                color: const Color.fromARGB(255, 201, 153, 251),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFFEC412),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: Container(
+          margin: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                currentQuestion.text,
+                style: GoogleFonts.lato(
+                  color: const Color(0xFF800020),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-            ...currentQuestion.getShuffledAnswers().map((answer) {
-              return AnswerButton(
-                answerText: answer,
-                onTap: () {
-                  answerQuestion(answer);
-                },
-              );
-            }),
-          ],
+
+              const SizedBox(height: 30),
+
+              ...currentQuestion.getShuffledAnswers().map((answer) {
+                return AnswerButton(
+                  answerText: answer,
+                  onTap: () {
+                    answerQuestion(answer);
+                  },
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
