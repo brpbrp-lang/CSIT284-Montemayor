@@ -41,6 +41,18 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${expense.title} deleted'),
+      ),
+    );
+  }
+
   void _openAddExpense() {
     showModalBottomSheet(
       context: context,
@@ -93,6 +105,7 @@ class _ExpensesState extends State<Expenses> {
                     child: _DashboardContent(
                       expenses: _registeredExpenses,
                       totalAmount: totalAmount,
+                      onRemoveExpense: _removeExpense,
                     ),
                   ),
                   Expanded(
@@ -110,6 +123,7 @@ class _ExpensesState extends State<Expenses> {
             return _DashboardContent(
               expenses: _registeredExpenses,
               totalAmount: totalAmount,
+              onRemoveExpense: _removeExpense,
             );
           },
         ),
@@ -122,10 +136,12 @@ class _DashboardContent extends StatelessWidget {
   const _DashboardContent({
     required this.expenses,
     required this.totalAmount,
+    required this.onRemoveExpense,
   });
 
   final List<Expense> expenses;
   final double totalAmount;
+  final void Function(Expense expense) onRemoveExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +198,7 @@ class _DashboardContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ExpensesList(
               expenses: expenses,
+              onRemoveExpense: onRemoveExpense,
             ),
           ),
         ),
