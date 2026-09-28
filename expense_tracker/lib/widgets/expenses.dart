@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/expense.dart';
 import 'expenses_chart.dart';
 import 'expenses_list.dart';
+import 'new_expense.dart';
 
-class Expenses extends StatelessWidget {
+class Expenses extends StatefulWidget {
   const Expenses({
     super.key,
     required this.expenses,
@@ -12,8 +13,48 @@ class Expenses extends StatelessWidget {
 
   final List<Expense> expenses;
 
+  @override
+  State<Expenses> createState() {
+    return _ExpensesState();
+  }
+}
+
+class _ExpensesState extends State<Expenses> {
+  late List<Expense> _registeredExpenses;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _registeredExpenses = List.from(widget.expenses);
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Expense added successfully'),
+      ),
+    );
+  }
+
+  void _openAddExpense() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return NewExpense(
+          onAddExpense: _addExpense,
+        );
+      },
+    );
+  }
+
   double get totalAmount {
-    return expenses.fold(
+    return _registeredExpenses.fold(
       0.0,
       (sum, expense) => sum + expense.amount,
     );
@@ -35,7 +76,7 @@ class Expenses extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddExpense,
             icon: const Icon(Icons.add),
             tooltip: 'Add expense',
           ),
@@ -50,7 +91,7 @@ class Expenses extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: _DashboardContent(
-                      expenses: expenses,
+                      expenses: _registeredExpenses,
                       totalAmount: totalAmount,
                     ),
                   ),
@@ -58,7 +99,7 @@ class Expenses extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: ExpensesChart(
-                        expenses: expenses,
+                        expenses: _registeredExpenses,
                       ),
                     ),
                   ),
@@ -67,7 +108,7 @@ class Expenses extends StatelessWidget {
             }
 
             return _DashboardContent(
-              expenses: expenses,
+              expenses: _registeredExpenses,
               totalAmount: totalAmount,
             );
           },
