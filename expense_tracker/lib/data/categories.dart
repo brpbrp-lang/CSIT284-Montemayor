@@ -7,33 +7,33 @@ class CategoryData {
     required this.label,
     required this.icon,
   });
-  
+
   final String label;
   final IconData icon;
 }
 
-const categories = {
-  Category.food: CategoryData(
+final categories = <Category, CategoryData>{
+  Category.food: const CategoryData(
     label: 'Food',
     icon: Icons.restaurant,
   ),
-  Category.transportation: CategoryData(
+  Category.transportation: const CategoryData(
     label: 'Transportation',
     icon: Icons.directions_bus,
   ),
-  Category.education: CategoryData(
+  Category.education: const CategoryData(
     label: 'Education',
     icon: Icons.school,
   ),
-  Category.entertainment: CategoryData(
+  Category.entertainment: const CategoryData(
     label: 'Entertainment',
     icon: Icons.sports_esports,
   ),
-  Category.bills: CategoryData(
+  Category.bills: const CategoryData(
     label: 'Bills',
     icon: Icons.lightbulb,
   ),
-  Category.other: CategoryData(
+  Category.other: const CategoryData(
     label: 'Other',
     icon: Icons.category,
   ),
