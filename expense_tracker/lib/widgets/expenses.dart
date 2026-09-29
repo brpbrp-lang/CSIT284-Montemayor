@@ -34,9 +34,14 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.add(expense);
     });
 
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Expense added successfully'),
+      SnackBar(
+        content: Text(
+          '${expense.title} added successfully',
+        ),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -46,9 +51,14 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
     });
 
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${expense.title} deleted'),
+        content: Text(
+          '${expense.title} deleted',
+        ),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -79,10 +89,17 @@ class _ExpensesState extends State<Expenses> {
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('My Expenses'),
+            Text(
+              'My Expenses',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Text(
               'September 2026',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(
+                fontSize: 13,
+              ),
             ),
           ],
         ),
@@ -128,6 +145,11 @@ class _ExpensesState extends State<Expenses> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _openAddExpense,
+        icon: const Icon(Icons.add),
+        label: const Text('Add Expense'),
+      ),
     );
   }
 }
@@ -148,51 +170,95 @@ class _DashboardContent extends StatelessWidget {
     return Column(
       children: [
         Card(
-          margin: const EdgeInsets.all(16),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'TOTAL SPENDING',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '₱${totalAmount.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text('This Month'),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.primaryContainer,
                 ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.account_balance_wallet,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'TOTAL SPENDING',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(
+                    begin: 0,
+                    end: totalAmount,
+                  ),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, value, child) {
+                    return Text(
+                      '₱${value.toStringAsFixed(2)}',
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 4),
+                Text(
+                  'This Month',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
             ),
           ),
         ),
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ExpensesChart(
             expenses: expenses,
           ),
         ),
-        const SizedBox(height: 8),
+
+        const SizedBox(height: 12),
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Recent Expenses',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
         ),
+
         const SizedBox(height: 8),
+
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

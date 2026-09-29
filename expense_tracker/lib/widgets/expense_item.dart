@@ -21,6 +21,7 @@ class ExpenseItem extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
+              radius: 24,
               backgroundColor:
                   Theme.of(context).colorScheme.primaryContainer,
               child: Icon(
@@ -28,29 +29,48 @@ class ExpenseItem extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     expense.title,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(categoryData.label),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${expense.date.month}/${expense.date.day}/${expense.date.year}',
-                    style: Theme.of(context).textTheme.bodySmall,
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Icon(
+                        categoryData.icon,
+                        size: 14,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        categoryData.label,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '• ${expense.date.month}/${expense.date.day}/${expense.date.year}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
+            const SizedBox(width: 12),
             Text(
               '₱${expense.amount.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
             ),
           ],
