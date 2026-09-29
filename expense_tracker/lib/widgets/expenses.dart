@@ -64,12 +64,13 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _openAddExpense() {
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      isScrollControlled: true,
       builder: (context) {
-        return NewExpense(
-          onAddExpense: _addExpense,
+        return Dialog(
+          child: NewExpense(
+            onAddExpense: _addExpense,
+          ),
         );
       },
     );
@@ -205,7 +206,6 @@ class _DashboardContent extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-
                 TweenAnimationBuilder<double>(
                   tween: Tween<double>(
                     begin: 0,
@@ -224,7 +224,6 @@ class _DashboardContent extends StatelessWidget {
                     );
                   },
                 ),
-
                 const SizedBox(height: 4),
                 Text(
                   'This Month',
@@ -234,16 +233,13 @@ class _DashboardContent extends StatelessWidget {
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ExpensesChart(
             expenses: expenses,
           ),
         ),
-
         const SizedBox(height: 12),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Align(
@@ -256,9 +252,7 @@ class _DashboardContent extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 8),
-
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
