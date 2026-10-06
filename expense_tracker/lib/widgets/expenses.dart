@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/expense.dart';
-import 'expenses_chart.dart';
-import 'expenses_list.dart';
+import 'expenses_content.dart';
 import 'new_expense.dart';
 
 class Expenses extends StatefulWidget {
@@ -38,9 +37,7 @@ class _ExpensesState extends State<Expenses> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          '${expense.title} added successfully',
-        ),
+        content: Text('${expense.title} added successfully'),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -55,9 +52,7 @@ class _ExpensesState extends State<Expenses> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          '${expense.title} deleted',
-        ),
+        content: Text('${expense.title} deleted'),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -67,9 +62,16 @@ class _ExpensesState extends State<Expenses> {
     showDialog(
       context: context,
       builder: (context) {
+        final width = MediaQuery.of(context).size.width;
+
         return Dialog(
-          child: NewExpense(
-            onAddExpense: _addExpense,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: width > 600 ? 600 : width * 0.95,
+            ),
+            child: NewExpense(
+              onAddExpense: _addExpense,
+            ),
           ),
         );
       },
@@ -97,7 +99,7 @@ class _ExpensesState extends State<Expenses> {
               ),
             ),
             Text(
-              'September 2026',
+              'Track your spending',
               style: TextStyle(
                 fontSize: 13,
               ),
@@ -110,159 +112,35 @@ class _ExpensesState extends State<Expenses> {
             icon: const Icon(Icons.add),
             tooltip: 'Add expense',
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth >= 700) {
-              return Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: _DashboardContent(
-                      expenses: _registeredExpenses,
-                      totalAmount: totalAmount,
-                      onRemoveExpense: _removeExpense,
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: ExpensesChart(
-                        expenses: _registeredExpenses,
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
+        child: ExpensesContent(
+          expenses: _registeredExpenses,
+          totalAmount: totalAmount,
+          onRemoveExpense: _removeExpense,
+        ),
+      ),
+      floatingActionButton: Builder(
+        builder: (context) {
+          final width = MediaQuery.of(context).size.width;
 
-            return _DashboardContent(
-              expenses: _registeredExpenses,
-              totalAmount: totalAmount,
-              onRemoveExpense: _removeExpense,
+          if (width < 400) {
+            return FloatingActionButton(
+              onPressed: _openAddExpense,
+              tooltip: 'Add expense',
+              child: const Icon(Icons.add),
             );
-          },
-        ),
+          }
+
+          return FloatingActionButton.extended(
+            onPressed: _openAddExpense,
+            icon: const Icon(Icons.add),
+            label: const Text('Add Expense'),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openAddExpense,
-        icon: const Icon(Icons.add),
-        label: const Text('Add Expense'),
-      ),
-    );
-  }
-}
-
-class _DashboardContent extends StatelessWidget {
-  const _DashboardContent({
-    required this.expenses,
-    required this.totalAmount,
-    required this.onRemoveExpense,
-  });
-
-  final List<Expense> expenses;
-  final double totalAmount;
-  final void Function(Expense expense) onRemoveExpense;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          margin: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.primaryContainer,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.account_balance_wallet,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'TOTAL SPENDING',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                TweenAnimationBuilder<double>(
-                  tween: Tween<double>(
-                    begin: 0,
-                    end: totalAmount,
-                  ),
-                  duration: const Duration(milliseconds: 500),
-                  builder: (context, value, child) {
-                    return Text(
-                      '₱${value.toStringAsFixed(2)}',
-                      style:
-                          Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    Theme.of(context).colorScheme.secondary,
-                              ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'This Month',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ExpensesChart(
-            expenses: expenses,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Recent Expenses',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ExpensesList(
-              expenses: expenses,
-              onRemoveExpense: onRemoveExpense,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
