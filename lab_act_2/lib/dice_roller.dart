@@ -27,7 +27,12 @@ class _DiceRollerState extends State<DiceRoller> {
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: rollDice,
-          child: Text(style: TextStyle(fontSize: 28), "Roll Dice"),
+          child: Text(
+            style: TextStyle(
+              fontSize: 28
+              ), 
+              "Roll Dice"
+          ),
         ),
       ],
     );
