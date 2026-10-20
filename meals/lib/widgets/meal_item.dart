@@ -18,10 +18,9 @@ class MealItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (ctx) => MealDetailsScreen(meal: meal),
-            ),
+          Navigator.of(context).pushNamed(
+           '/meal-details',
+            arguments: meal,
           );
         },
         child: Column(

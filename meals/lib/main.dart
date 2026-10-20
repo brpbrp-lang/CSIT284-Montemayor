@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:meals/screens/categories.dart';
+import 'package:meals/screens/meal_details.dart';
+import 'package:meals/models/meal.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -9,7 +10,6 @@ final theme = ThemeData(
     brightness: Brightness.dark,
     seedColor: const Color.fromARGB(255, 131, 57, 0),
   ),
-  // textTheme: GoogleFonts.latoTextTheme(),
 );
 
 void main() {
@@ -23,7 +23,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: CategoriesScreen(),
+      home: const CategoriesScreen(),
+
+      onGenerateRoute: (settings) {
+        if (settings.name == '/meal-details') {
+          final meal = settings.arguments as Meal;
+
+          return MaterialPageRoute(
+            builder: (ctx) => MealDetailsScreen(meal: meal),
+          );
+        }
+
+        return null;
+      },
     );
   }
 }
