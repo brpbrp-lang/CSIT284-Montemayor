@@ -1,13 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
-import 'package:meals/screens/meal_details.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({
-    super.key,
-    required this.meal,
-  });
+  const MealItem({super.key, required this.meal});
 
   final Meal meal;
 
@@ -17,11 +12,18 @@ class MealItem extends StatelessWidget {
       margin: const EdgeInsets.all(8),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(
-           '/meal-details',
-            arguments: meal,
-          );
+        onTap: () async {
+          final isFavorite = await Navigator.of(context)
+              .pushNamed<bool>('/meal-details', arguments: meal);
+          if (!context.mounted) return;
+
+          if (isFavorite == true) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${meal.title} added to favorites!')
+                ),
+            );
+          }
         },
         child: Column(
           children: [

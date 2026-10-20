@@ -2,19 +2,60 @@
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 
-class MealDetailsScreen extends StatelessWidget {
+class MealDetailsScreen extends StatefulWidget {
   const MealDetailsScreen({
     super.key,
     required this.meal,
+    required this.isFavorite,
+    required this.onToggleFavorite,
   });
 
   final Meal meal;
+  final bool isFavorite;
+  final void Function(Meal meal) onToggleFavorite;
+
+  @override
+  State<MealDetailsScreen> createState() {
+    return _MealDetailsScreenState();
+  }
+}
+
+class _MealDetailsScreenState extends State<MealDetailsScreen> {
+  late bool _isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final meal = widget.meal;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(_isFavorite);
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isFavorite = !_isFavorite;
+              });
+
+              widget.onToggleFavorite(widget.meal);
+            },
+            icon: Icon(
+              _isFavorite ? Icons.star : Icons.star_border,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -26,14 +67,12 @@ class MealDetailsScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 14),
-
             Text(
               'Ingredients',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 10),
-
             for (final ingredient in meal.ingredients)
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -45,16 +84,13 @@ class MealDetailsScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-
             const SizedBox(height: 20),
-
             Text(
               'Steps',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 10),
-
             for (var i = 0; i < meal.steps.length; i++)
               ListTile(
                 leading: CircleAvatar(
