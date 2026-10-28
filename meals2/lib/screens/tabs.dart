@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals2/providers/filters_provider.dart';
-import 'package:meals2/data/dummy_data.dart';
-import 'package:meals2/models/meal.dart';
+// import 'package:meals2/data/dummy_data.dart';
+// import 'package:meals2/models/meal.dart';
 import 'package:meals2/providers/favorites_provider.dart';
-import 'package:meals2/providers/meals_provider.dart';
+// import 'package:meals2/providers/meals_provider.dart';
 import 'package:meals2/screens/categories.dart';
 import 'package:meals2/screens/filters.dart';
 import 'package:meals2/screens/meals.dart';
